@@ -6,7 +6,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v2
       
       - name: Hello Codelies!
         run: echo "Hello from wf:'${{ github.workflow }}' triggered by the event:'${{ github.event_name }}' done by user:'${{ github.actor }}'"
