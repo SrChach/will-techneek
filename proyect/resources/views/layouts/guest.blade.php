@@ -50,10 +50,6 @@
     <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.5/dist/jquery.validate.js"></script>
 
     <script>
-        var elem = document.querySelector('.js-switch');
-        var init = new Switchery(elem, {
-            size: 'small'
-        });
 
         $('select').on('change', function() {
             var selectedValues = [];
