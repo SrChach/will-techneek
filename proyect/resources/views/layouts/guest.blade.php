@@ -17,7 +17,10 @@
 
     <!-- icons -->
     <link href="{{ asset('assets/css/icons.min.css') }}" rel="stylesheet" type="text/css" />
-
+    @vite([
+        'resources/css/main.css',
+        'resources/js/main.js'
+    ])
 </head>
 
 <body class="loading authentication-bg authentication-bg-pattern">
