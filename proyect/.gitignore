@@ -20,3 +20,6 @@ yarn-error.log
 
 # Custom
 *.nachotemp
+
+# TODO finish migrate
+/public/assets/images
