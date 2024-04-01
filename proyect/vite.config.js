@@ -22,6 +22,9 @@ export default defineConfig({
                 // JS
                 'resources/js/app.js',
                 'resources/js/main.js',
+
+                // Migrating JS
+                'resources/js/migrating/form.js',
             ],
             refresh: true,
         }),

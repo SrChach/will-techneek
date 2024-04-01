@@ -1,5 +1,9 @@
-// const PROJECT_URL = "https://techneektutor.com"
-const PROJECT_URL = "http://localhost:8000"
+/**
+ * Constant for pointing to right APP_URL
+ */
+const PROJECT_URL = import.meta.env.VITE_APP_URL || "https://techneektutor.com"
+
+alert(PROJECT_URL)
 
 $.ajaxSetup({
     headers:

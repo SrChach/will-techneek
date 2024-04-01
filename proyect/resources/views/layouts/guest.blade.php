@@ -75,7 +75,10 @@
 
     <!-- App js -->
     <script src="{{ asset('assets/js/app.min.js') }}"></script>
-    <script src="{{ asset('assets/js/form.js') }}"></script>
+    <!-- <script src="{{ asset('assets/js/form.js') }}"></script> -->
+    @vite([
+        'resources/js/migrating/form.js'
+    ])
 
 </body>
 

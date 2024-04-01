@@ -1,2 +1,2 @@
-alert('Si entra')
+console.warn('Módulo main.js')
 
