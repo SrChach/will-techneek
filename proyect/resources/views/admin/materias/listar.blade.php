@@ -131,9 +131,9 @@
                                                 <small class="text-blue"><b> ${data[index].countImpartidas} Clases impartidas</b></small><br>
                                                 <small class="text-success"><b> ${data[index].countProgramadas} Clases
                                                         Programadas</b></small><br>
-                                                <a href="https://techneektutor.com/sistema/materia/${data[index].idMateria}/show"
+                                                <a href="{{ env('APP_URL') }}/materia/${data[index].idMateria}/show"
                                                     class="btn btn-primary rounded-pill btn-xs waves-effect waves-light mt-2 me-2">Detalles</a>
-                                                <a href="https://techneektutor.com/sistema/materia/${data[index].idMateria}/edit"
+                                                <a href="{{ env('APP_URL') }}/materia/${data[index].idMateria}/edit"
                                                     class="btn btn-warning rounded-pill btn-xs waves-effect waves-light mt-2">Editar</a>
                                             </div>
                                         </div>

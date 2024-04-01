@@ -17,7 +17,7 @@
         Hora : {{ $infoClase->hora }} <br>
         Fecha : {{ $infoClase->fecha }} <br>
         <a href="{{ $infoClase->meets }}">Liga Meets</a> <br>
-        <a href="https://techneektutor.com/sistema/clases/ficha/alumno/{{$infoClase->idClase}}">Ficha de la Clase</a> <br>
+        <a href="{{ env('APP_URL') }}/clases/ficha/alumno/{{$infoClase->idClase}}">Ficha de la Clase</a> <br>
     </p>
 </body>
 </html>

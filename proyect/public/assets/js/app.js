@@ -16,29 +16,6 @@ class LeftSidebar {
     initMenu() {
         var self = this;
 
-        // var defaultSidebarSize = sidebar.size ? sidebar.size : 'default';
-
-        // resets everything
-
-        // Left menu collapse
-        // $('.button-menu-mobile').on('click', function (event) {
-        //     event.preventDefault();
-        //     var sidebarSize = self.body.attr('data-sidebar-size');
-        //     if (self.window.width() >= 993) {
-        //         if (sidebarSize === 'condensed') {
-        //             self.changeSize(defaultSidebarSize);
-        //             window.dispatchEvent(new Event('adminto.setFluid'));
-        //         } else {
-        //             self.changeSize('condensed');
-        //             window.dispatchEvent(new Event('adminto.setBoxed'));
-        //         }
-        //     } else {
-        //         self.changeSize(defaultSidebarSize);
-        //         self.body.toggleClass('sidebar-enable');
-        //         window.dispatchEvent(new Event('adminto.setFluid'));
-        //     }
-        // });
-
         // sidebar - main menu
         if ($("#side-menu").length) {
             var navCollapse = $('#side-menu li .collapse');
@@ -80,13 +57,6 @@ class LeftSidebar {
         if (twoColSideNav.length) {
             var twoColSideNavItems = $("#two-col-sidenav-main .nav-link");
             var sideSubMenus = $(".twocolumn-menu-item");
-
-            // showing/displaying tooltip based on screen size
-            // if (this.window.width() >= 585) {
-            //     twoColSideNavItems.tooltip('enable');
-            // } else {
-            //     twoColSideNavItems.tooltip('disable');
-            // }
 
             var nav = $('.twocolumn-menu-item .nav-second-level');
             var navCollapse = $('#two-col-menu li .collapse');
@@ -489,8 +459,6 @@ class ThemeCustomizer {
     init() {
         this.initConfig();
         this.initSwitchListener();
-        // this.setSwitchFromConfig();
-
     }
 }
 
@@ -506,8 +474,6 @@ class Layout {
         this.rightSidebar.init();
         this.topbar.init();
         this.leftSidebar.init();
-
-
     }
 }
 
@@ -781,16 +747,6 @@ File: Main Js File
 
                 this.initControls();
 
-
-                // showing the sidebar on load if user is visiting the page first time only
-                // var bodyConfig = this.$body.data('layout');
-                // if (window.sessionStorage && bodyConfig && bodyConfig.hasOwnProperty('showRightSidebarOnPageLoad') && bodyConfig['showRightSidebarOnPageLoad']) {
-                //     var alreadyVisited = sessionStorage.getItem("_ADMINTO_VISITED_");
-                //     if (!alreadyVisited) {
-                //         $.RightBar.toggleRightSideBar();
-                //         sessionStorage.setItem("_ADMINTO_VISITED_", true);
-                //     }
-                // }
 
                 //Popovers
                 var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'))

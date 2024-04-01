@@ -92,7 +92,7 @@
                                             style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0; padding: 0 0 20px; text-align: center;"
                                             valign="top" >
                         <!-- falta link de pedido-->
-                                            <a href="https://techneektutor.com/sistema/pedidos/{{$infoPedido->folio}}/show" class="btn-primary" 
+                                            <a href="{{ env('APP_URL') }}/pedidos/{{$infoPedido->folio}}/show" class="btn-primary" 
                                                 style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; color: #FFF; text-decoration: none; line-height: 2em; font-weight: bold; text-align: center; cursor: pointer; display: inline-block; border-radius: 5px; text-transform: capitalize; background-color: #81D742; margin: 0; border-color: #81D742; border-style: solid; border-width: 8px 16px;">Programar clases</a>
                                         </td>
                                     </tr>
@@ -116,7 +116,7 @@
                                 style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;">
                                 <td class="aligncenter content-block"
                                     style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 12px; vertical-align: top; color: #999; text-align: center; margin: 0; padding: 0 0 20px;"
-                                    align="center" valign="top"><a href="https://technektutor.com/sistema"
+                                    align="center" valign="top"><a href="{{ env('APP_URL') }}"
                                         style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 12px; color: #999; text-decoration: underline; margin: 0;">Tech
                                         Neek</a>
                                 </td>

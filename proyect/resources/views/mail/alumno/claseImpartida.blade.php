@@ -16,7 +16,7 @@
         Tema : 1.1 {{ $infoClase->temaNombre }} <br> <!-- falta numero de tema segun db -->
         Hora : {{ $infoClase->hora }} <br>
         Fecha : {{ $infoClase->fecha }} <br>
-        <a href="https://techneektutor.com/sistema/clases/ficha/alumno/{{$infoClase->idClase}}">Ficha de la Clase</a> <br>
+        <a href="{{ env('APP_URL') }}/clases/ficha/alumno/{{$infoClase->idClase}}">Ficha de la Clase</a> <br>
     </p>
 </body>
 </html>

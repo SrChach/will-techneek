@@ -214,7 +214,7 @@
                                             <p class="text-muted mb-2 font-13 text-truncate">${data[index].correoProfesor}</p>
                                             <small class="text-success"><b>${data[index].countImpartidas}  Impartidas</b></small> - 
                                             <small class="text-warning"><b>${data[index].countProgramadas}  Programadas</b></small><br>
-                                            <a href="https://techneektutor.com/sistema/profesor/${data[index].idProfesor}/show"><button type="button" class="btn btn-soft-primary rounded-pill btn-xs waves-effect waves-light mt-2">Detalles</button></a>
+                                            <a href="{{ env('APP_URL') }}/profesor/${data[index].idProfesor}/show"><button type="button" class="btn btn-soft-primary rounded-pill btn-xs waves-effect waves-light mt-2">Detalles</button></a>
                                         </div>
                                     </div>
                                 </div>
