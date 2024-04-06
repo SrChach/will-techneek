@@ -38,7 +38,7 @@ class RegisteredUserController extends Controller
     public function deleteme()
     {
         $listamaterias = Materias::all();
-	return response()->json($listamaterias);
+	    return response()->json($listamaterias);
     }
 
     /**
