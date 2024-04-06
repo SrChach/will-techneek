@@ -17,11 +17,12 @@ Sin embargo, necesitamos tener estos pre-requisitos:
 
 ### Deuda técnica
 
+0. Agregar automatizaciones para el `npm run build`, `dump.sql` y mejorar automatización de Docker Compose (no instala composer al construir). 
 1. Se encuentran hardcodeadas las url `https://techneek.com/sistema` en muchos lados y/o archivos JS. Se recomienda compilar con Vite y extraer a variables de entorno
 2. Re-ordenar el sitio y la manera de servir los assets (JS, archivos basura innecesarios)
 3. Compilar archivos desde Vite / Node.
 4. Generar dependencias externas (vendor, node modules, google calendar / vendor) almacenadas en el repo
-5. Agregar documentación de la configuración de contenedores, variables de entorno `.env.example` y despliegue. Explicar variables del `.env`
+5. Agregar documentación de la configuración de contenedores, y variables de despliegue. Explicar variables del `.env`
 6. Pipelines de infra y despliegue
 
 > Opcional: Agregar variables de entorno desde docker-compose para desarrollo
