@@ -28,6 +28,13 @@ use Illuminate\Support\Facades\Notification;
 class ClasesController extends Controller
 {
 
+    public function clasesIndex() {
+        $clases = Clases::infoClasesAll();
+        $estados = EstadosClases::all();
+
+        return response()->json($estados);
+    }
+
     /**
      * 
      * funcion que se encarga de enlistar las clases 
@@ -36,10 +43,6 @@ class ClasesController extends Controller
     public function index(): View
     {
         $clases = Clases::infoClasesAll();
-        
-		/*echo "<pre>";
-			print_r($clases);
-		echo "</pre>";*/
 		
 		$estados = EstadosClases::all();
 

@@ -14,6 +14,8 @@ class EstadosUsuarios extends Model
     public const VERIFICAR_CORREO = 3;
     public const SUSPENDIDO = 4;
 
+    public const DEFAULT_STATUS = self::VERIFICAR_CORREO;
+
     /**
      * The table associated with the model.
      *

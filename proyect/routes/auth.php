@@ -8,9 +8,6 @@ Route::middleware('guest')->group(function () {
     Route::get('register', [RegisteredUserController::class, 'create'])
                 ->name('register');
 
-
-    Route::get('deleteme', [RegisteredUserController::class, 'deleteme'])->name('deleteme');
-
     Route::post('register/store', [RegisteredUserController::class, 'store'])->name('register.store');
 	
 	Route::get('register/verificarCorreo', [RegisteredUserController::class, 'verificarCorreo'])->name('register.verificarCorreo');

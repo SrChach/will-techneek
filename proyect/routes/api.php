@@ -3,6 +3,8 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginRegisterController;
+use App\Http\Controllers\ClasesController;
+use App\Http\Controllers\MateriasApiController;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,15 +23,19 @@ Route::controller(LoginRegisterController::class)->group(function() {
     Route::post('/login', 'login');
 });
 
+Route::middleware([])->group(function() {
+    Route::get('materias', [MateriasApiController::class, 'index']);
+});
+
 Route::middleware('auth:sanctum')->group(function () {
+    Route::get('deleteme', [MateriasApiController::class, 'deleteme']);
+
     Route::get('user', function (Request $request) {
         return $request->user();
     });
 
-    Route::get('deleteme', function(Request $request) {
-        return 'demo exitosa';
-    });
+    Route::get('clases/all', [ClasesController::class, 'clasesIndex']);
 
-    Route::post('logout', [LoginRegisterController::class, 'logout']);
+    Route::get('logout', [LoginRegisterController::class, 'logout']);
 });
 

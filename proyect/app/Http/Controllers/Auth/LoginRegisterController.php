@@ -2,21 +2,15 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Application\User as ApplicationUser;
+use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
 class LoginRegisterController extends Controller
 {
-    public function getUser() {
-        $usersList = User::primerUsuario()->first();
-        $password = $usersList->password;
-
-        return response()->json($password, 200);
-    }
-
     /**
      * Register a new user.
      *
@@ -27,6 +21,7 @@ class LoginRegisterController extends Controller
     {
         $validate = Validator::make($request->all(), [
             'nombre' => 'required|string|max:250',
+            'apellidos' => 'sometimes|string|max:250',
             'email' => 'required|string|email:rfc,dns|max:250|unique:users,email',
             'password' => 'required|string|min:8|confirmed'
         ]);
@@ -39,11 +34,7 @@ class LoginRegisterController extends Controller
             ], 403);
         }
 
-        $user = User::create([
-            'nombre' => $request->nombre,
-            'email' => $request->email,
-            'password' => Hash::make($request->password)
-        ]);
+        $user = ApplicationUser::create($request->nombre, $request->apellidos, $request->email, $request->password);
 
         $data['token'] = $user->createToken($request->email)->plainTextToken;
         $data['user'] = $user;

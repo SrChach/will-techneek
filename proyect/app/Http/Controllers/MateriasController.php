@@ -2,9 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Application\Clases\Materia;
 use App\Models\Materias;
-use Illuminate\Contracts\View\View;
-use Illuminate\Http\Request;
 use App\Http\Controllers\FileController;
 use App\Models\Clases;
 use App\Models\EstadosClases;
@@ -14,6 +13,8 @@ use App\Models\Roles;
 use App\Models\Temas;
 use App\Models\UsuariosMaterias;
 use Illuminate\Cache\RateLimiting\Limit;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\Request;
 
 class MateriasController extends Controller
 {

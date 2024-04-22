@@ -12,6 +12,7 @@ class Roles extends Model
     const ADMINISTRADOR = 1;
     const PROFESOR = 2;
     const ALUMNO = 3;
+    const DEFAULT = self::ALUMNO;
 
 
     /**

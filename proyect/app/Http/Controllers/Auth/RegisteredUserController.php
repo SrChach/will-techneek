@@ -35,12 +35,6 @@ class RegisteredUserController extends Controller
         ]);
     }
 
-    public function deleteme()
-    {
-        $listamaterias = Materias::all();
-	    return response()->json($listamaterias);
-    }
-
     /**
      * Handle an incoming registration request.
      *
