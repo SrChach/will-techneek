@@ -3,10 +3,9 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Application\User as ApplicationUser;
+use App\Exceptions\UserException;
 use App\Http\Controllers\Controller;
-use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
 class LoginRegisterController extends Controller
@@ -69,22 +68,12 @@ class LoginRegisterController extends Controller
             ], 403);
         }
 
-        // Check email exist
-        $user = User::where('email', $request->email)->first();
-
-        // Check password
-        if(!$user || !Hash::check($request->password, $user->password)) {
-            return response()->json([
-                'status' => 'failed',
-                'message' => 'Invalid credentials'
-                ], 401);
-        }
+        $user = ApplicationUser::getAuthenticated($request->email, $request->password);
 
         $data['token'] = $user->createToken($request->email)->plainTextToken;
         $data['user'] = $user;
         
         $response = [
-            'status' => 'success',
             'message' => 'User is logged in successfully.',
             'data' => $data,
         ];

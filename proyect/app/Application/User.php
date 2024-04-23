@@ -2,6 +2,7 @@
 
 namespace App\Application;
 
+use App\Exceptions\UserException;
 use App\Models\EstadosUsuarios;
 use App\Models\Roles;
 use App\Models\User as UserModel;
@@ -22,6 +23,16 @@ class User
             'email' => $correo,
             'password' => Hash::make($password),
         ]);
+
+        return $user;
+    }
+
+    public static function getAuthenticated($email, $password) {
+        $user = UserModel::where('email', $email)->first();
+
+        if (!$user || !Hash::check($password, $user->password)) {
+            throw UserException::invalidAuth();
+        }
 
         return $user;
     }
