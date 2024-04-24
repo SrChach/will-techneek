@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginRegisterController;
 use App\Http\Controllers\ClasesController;
 use App\Http\Controllers\MateriasApiController;
+use App\Http\Controllers\TemasApiController;
 
 /*
 |--------------------------------------------------------------------------
@@ -28,7 +29,13 @@ Route::middleware([])->group(function() {
 });
 
 Route::middleware('auth:sanctum')->group(function () {
-    Route::get('deleteme', [MateriasApiController::class, 'deleteme']);
+    Route::prefix('materias')->group(function () {
+        Route::get('full', [MateriasApiController::class, 'fullList']);
+        Route::post('', [MateriasApiController::class, 'store']);
+
+        Route::get('{idMaterias}/temas', [TemasApiController::class, 'list']);
+        Route::post('{idMaterias}/temas', [TemasApiController::class, 'addBatch']);
+    });
 
     Route::get('user', function (Request $request) {
         return $request->user();
