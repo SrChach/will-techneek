@@ -8,4 +8,8 @@ class MateriasException extends NotifiableException {
     public static function notCreated() {
         return new self('Materia no creada', 400);
     }
+
+    public static function invalid() {
+        return new self('Proporcionaste una materia incorrecta', 400);
+    }
 }

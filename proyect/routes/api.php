@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginRegisterController;
 use App\Http\Controllers\ClasesController;
 use App\Http\Controllers\MateriasApiController;
+use App\Http\Controllers\PedidosApiController;
 use App\Http\Controllers\TemasApiController;
 
 /*
@@ -35,6 +36,13 @@ Route::middleware('auth:sanctum')->group(function () {
 
         Route::get('{idMaterias}/temas', [TemasApiController::class, 'list']);
         Route::post('{idMaterias}/temas', [TemasApiController::class, 'addBatch']);
+    });
+
+    Route::prefix('pedidos')->group(function () {
+        Route::get('all', [PedidosApiController::class, 'index']);
+        Route::get('', [PedidosApiController::class, 'get']);
+
+        Route::post('', [PedidosApiController::class, 'store']);
     });
 
     Route::get('user', function (Request $request) {
