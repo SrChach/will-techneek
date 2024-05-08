@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 date_default_timezone_set('America/Mexico_City');
 
+use App\Application\Clases\Clase;
 use App\Mail\ClaseProgramadaAlumnoMailer;
 use App\Mail\ClaseProgramadaProfesorMailer;
 use App\Models\Clases;
@@ -222,14 +223,7 @@ class ClasesController extends Controller
      */
     public function crearClases($numeroClases, $idPedido)
     {
-
-        $numeroTotal = $numeroClases - 1;
-        for ($i = 0; $i <= $numeroTotal; $i++) {
-            $clase = new Clases();
-            $clase->idPedido = $idPedido;
-            $clase->idEstados = 1;
-            $clase->save();
-        }
+        Clase::createBatch($numeroClases, $idPedido);
     }
 
     /**

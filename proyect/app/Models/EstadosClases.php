@@ -16,6 +16,8 @@ class EstadosClases extends Model
     const PAGO_CLACULADO = 5;
     const PAGADA = 6;
 
+    const DEFAULT = self::POR_PROGRAMAR;
+
     /**
      * The table associated with the model.
      *

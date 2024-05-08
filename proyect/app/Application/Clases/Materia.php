@@ -38,6 +38,10 @@ class Materia
         return $listaMaterias;
     }
 
+    public static function getById($idMateria) {
+        return Materias::find($idMateria);
+    }
+
     // TODO subir imagenes
     public static function create($nombre, $urlIcon, $costo)
     {

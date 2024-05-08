@@ -109,4 +109,18 @@ class Materias extends Model
         
         return $materias;
     }
+
+    /** TODO discard, enhance models */
+    static function withTemas()
+    {
+        $materias = DB::table('materias')
+            ->select(
+                'materias.id AS idMateria', 'materias.nombre AS nombreMateria', 'materias.icono AS iconoMateria', 'temas.*'
+            )
+            ->join('temas', 'idMateria', '=', 'temas.idMateria')
+            ->groupBy('materias.id')
+            ->get();
+
+        return $materias;
+    }
 }
