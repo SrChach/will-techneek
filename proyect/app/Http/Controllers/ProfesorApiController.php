@@ -22,6 +22,10 @@ class ProfesorApiController extends Controller
     public static function showMateriasUsuarios() {
         return UsuariosMaterias::all();
     }
+    
+    public static function getMaterias($profesorId) {
+        return User::find($profesorId)->materias;
+    }
 
     /**
     * 

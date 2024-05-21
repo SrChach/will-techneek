@@ -4,6 +4,9 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\DB;
@@ -44,6 +47,28 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    function rol(): HasOne
+    {
+        return $this->hasOne(Roles::class, 'idRol');
+    }
+
+    function usuarioMaterias(): HasMany
+    {
+        return $this->hasMany(UsuariosMaterias::class, 'idUsuario');
+    }
+
+    function materias(): HasManyThrough
+    {
+        return $this->hasManyThrough(
+            Materias::class,
+            UsuariosMaterias::class,
+            'idUsuario', // id que conecta la tabla intermedia con esta
+            'id', // id de la tabla destino a comparar con la intermedia
+            'id', // id de esta tabla a comparar con la intermedia
+            'idMateria' // id que conecta la tabla intermedia con el destino
+        );
+    }
 
     static function countUsuariosForRol($idRol)
     {

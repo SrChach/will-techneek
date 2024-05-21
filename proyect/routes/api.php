@@ -33,6 +33,8 @@ Route::middleware([])->group(function() {
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::prefix('materias')->group(function () {
+        Route::get('{materiaId}/profesores', [MateriasApiController::class, 'getProfesores']);
+        Route::get('{materiaId}/alumnos', [MateriasApiController::class, 'getAlumnos']);
         Route::get('full', [MateriasApiController::class, 'fullList']);
         Route::post('', [MateriasApiController::class, 'store']);
 
@@ -51,7 +53,8 @@ Route::middleware('auth:sanctum')->group(function () {
     });
 
     Route::prefix('profesor')->group(function () {
-        Route::get('demo', [ProfesorApiController::class, 'showMateriasUsuarios']);
+        Route::get('materias/list', [ProfesorApiController::class, 'showMateriasUsuarios']);
+        Route::get('{profesorId}/materias/', [ProfesorApiController::class, 'getMaterias']);
     });
 
     Route::get('user', function (Request $request) {

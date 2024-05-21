@@ -2,15 +2,30 @@
 
 namespace App\Application\Clases;
 
+use App\Exceptions\MateriasException;
 use App\Models\Clases;
 use App\Models\EstadosClases;
 use App\Models\Materias;
 use App\Models\Pedidos;
+use App\Models\Roles;
 
 class Materia
 {
     public static function list() {
-        return Materias::all();
+        return Materias::with('usuarios')->get();
+    }
+
+    public static function getUsuariosByRole($materiaId, $rolId = Roles::DEFAULT) {
+        $materia = Materias::find($materiaId);
+        if (!$materia) {
+            throw MateriasException::notFound();
+        }
+
+        $materia->load(['usuarios' => function ($query) use ($rolId) {
+            $query->where('idRol', '=', $rolId);
+        }]);
+
+        return $materia->usuarios;
     }
 
     // TODO refactor

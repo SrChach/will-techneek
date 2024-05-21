@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Support\Facades\DB;
 
 class Materias extends Model
@@ -27,6 +29,23 @@ class Materias extends Model
         'icono',
         'costo',
     ];
+
+    function usuarioMaterias(): HasMany
+    {
+        return $this->hasMany(UsuariosMaterias::class, 'idMateria');
+    }
+
+    function usuarios(): HasManyThrough
+    {
+        return $this->hasManyThrough(
+            User::class,
+            UsuariosMaterias::class,
+            'idMateria',
+            'id',
+            'id',
+            'idUsuario'
+        );
+    }
 
     static function materiasForUsuario($idUsuario)  
     {
