@@ -26,6 +26,7 @@ class User extends Authenticatable
         'apellidos',
         'email',
         'password',
+        'idRol',
     ];
 
     /**
@@ -53,9 +54,9 @@ class User extends Authenticatable
         return $this->hasOne(Roles::class, 'idRol');
     }
 
-    function usuarioMaterias(): HasMany
+    function clases(): HasMany
     {
-        return $this->hasMany(UsuariosMaterias::class, 'idUsuario');
+        return $this->hasMany(Clases::class, 'idProfesor');
     }
 
     function materias(): HasManyThrough

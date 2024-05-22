@@ -34,10 +34,9 @@ class PedidosApiController extends Controller
         return response()->json($pedidos);
     }
 
-    public function get()
+    public function get($idPedido)
     {
-        $idAlumno = Auth::user()->id;
-        $pedidos = Pedido::get($idAlumno);
+        $pedidos = Pedido::get($idPedido);
 
         return response()->json($pedidos);
     }

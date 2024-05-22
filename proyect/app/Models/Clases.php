@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Facades\DB;
 
 class Clases extends Model
@@ -25,6 +27,14 @@ class Clases extends Model
     protected $fillable = [
         'idPedido'
     ];
+
+    public function profesor(): BelongsTo {
+        return $this->belongsTo(User::class, 'idProfesor');
+    }
+
+    public function pedido(): BelongsTo {
+        return $this->belongsTo(Pedidos::class, 'idPedido');
+    }
 
     static public function infoClasesAll()
     {

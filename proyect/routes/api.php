@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginRegisterController;
+use App\Http\Controllers\ClasesApiController;
 use App\Http\Controllers\ClasesController;
 use App\Http\Controllers\MateriasApiController;
 use App\Http\Controllers\PedidosApiController;
@@ -22,6 +23,7 @@ use App\Http\Controllers\TemasApiController;
 */
 
 Route::post('register', [LoginRegisterController::class, 'register']);
+Route::post('profesor/register', [ProfesorApiController::class, 'store']);
 
 Route::controller(LoginRegisterController::class)->group(function() {
     Route::post('/login', 'login');
@@ -43,8 +45,8 @@ Route::middleware('auth:sanctum')->group(function () {
     });
 
     Route::prefix('pedidos')->group(function () {
-        Route::get('all', [PedidosApiController::class, 'index']);
-        Route::get('', [PedidosApiController::class, 'get']);
+        Route::get('', [PedidosApiController::class, 'index']);
+        Route::get('{idPedido}', [PedidosApiController::class, 'get']);
 
         Route::post('', [PedidosApiController::class, 'store']);
         Route::get('folio/{folio}', [PedidosApiController::class, 'show']);
@@ -53,8 +55,16 @@ Route::middleware('auth:sanctum')->group(function () {
     });
 
     Route::prefix('profesor')->group(function () {
+        Route::get('', [ProfesorApiController::class, 'list']);
+        Route::get('{idProfesor}', [ProfesorApiController::class, 'get']);
         Route::get('materias/list', [ProfesorApiController::class, 'showMateriasUsuarios']);
         Route::get('{profesorId}/materias/', [ProfesorApiController::class, 'getMaterias']);
+    });
+
+    Route::prefix('clases')->group(function () {
+        Route::get('', [ClasesApiController::class, 'list']);
+
+        Route::get('all', [ClasesController::class, 'clasesIndex']);
     });
 
     Route::get('user', function (Request $request) {
@@ -68,8 +78,6 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('horario', [PerfilApiController::class, 'addHorario']);
         Route::delete('horario', [PerfilApiController::class, 'deleteHorario']);
     });
-
-    Route::get('clases/all', [ClasesController::class, 'clasesIndex']);
 
     Route::get('logout', [LoginRegisterController::class, 'logout']);
 });

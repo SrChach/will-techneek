@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Facades\DB;
 
 class Pedidos extends Model
@@ -17,9 +19,17 @@ class Pedidos extends Model
      */
     protected $table = 'pedidos';
 
-    public function user()  
+    public function alumno(): BelongsTo
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'idAlumno');
+    }
+
+    public function clases(): HasMany {
+        return $this->hasMany(Clases::class, 'idPedido');
+    }
+
+    public function materia(): BelongsTo {
+        return $this->belongsTo(Materias::class, 'idMateria');
     }
 
     static function infoPedido($folio)

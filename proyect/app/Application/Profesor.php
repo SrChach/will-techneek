@@ -23,4 +23,20 @@ class Profesor
         // TODO add bienvenida profesor
         return $profesor;
     }
+
+    public static function list() {
+        $profesores = UserModel::where('idRol', Roles::PROFESOR)->get();
+
+        return response()->json($profesores);
+    }
+
+    public static function get($idProfesor) {
+        $profesor = UserModel::where('id', $idProfesor)->where('idRol', Roles::PROFESOR)->first();
+
+        if (!$profesor) {
+            throw UserException::notFound();
+        }
+
+        return response()->json($profesor);
+    }
 }

@@ -13,11 +13,14 @@ class User
 
     public const DEFAULT_EMPTY_LASTNAME = '';
 
-    public static function create($nombre, $apellidos = self::DEFAULT_EMPTY_LASTNAME, $correo, $password)
+    public static function create(
+        $nombre, $apellidos = self::DEFAULT_EMPTY_LASTNAME, $correo, $password,
+        $idRol = Roles::DEFAULT, $estadoUsuario = EstadosUsuarios::DEFAULT_STATUS
+    )
     {
         $user = UserModel::create([
-            'idRol' => Roles::DEFAULT,
-            'idStatus' => EstadosUsuarios::DEFAULT_STATUS,
+            'idRol' => "$idRol",
+            'idStatus' => $estadoUsuario,
             'nombre' => $nombre,
             'apellidos' => $apellidos,
             'email' => $correo,

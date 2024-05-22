@@ -14,10 +14,19 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 use App\Models\BitacorasProfesor;
+use App\Models\Roles;
 use App\Models\UsuariosMaterias;
 
 class ProfesorApiController extends Controller
 {
+
+    public function list() {
+        return Profesor::list();
+    }
+
+    public function get($idProfesor) {
+        return Profesor::get($idProfesor);
+    }
     
     public static function showMateriasUsuarios() {
         return UsuariosMaterias::all();

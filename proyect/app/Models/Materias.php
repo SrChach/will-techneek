@@ -30,11 +30,6 @@ class Materias extends Model
         'costo',
     ];
 
-    function usuarioMaterias(): HasMany
-    {
-        return $this->hasMany(UsuariosMaterias::class, 'idMateria');
-    }
-
     function usuarios(): HasManyThrough
     {
         return $this->hasManyThrough(
@@ -45,6 +40,11 @@ class Materias extends Model
             'id',
             'idUsuario'
         );
+    }
+
+    public function pedidos(): HasMany
+    {
+        return $this->hasMany(Pedidos::class, 'idMateria');
     }
 
     static function materiasForUsuario($idUsuario)  

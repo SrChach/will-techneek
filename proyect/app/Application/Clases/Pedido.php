@@ -9,12 +9,17 @@ class Pedido
 {
     
     public static function list() {
-        $pedidos = Pedidos::all();
+        $pedidos = Pedidos::with('clases')->get();
         return $pedidos;
     }
 
-    public static function get($alumnoId) {
-        $pedidos = Pedidos::pedidosForUsuario($alumnoId);
+    public static function get($idPedido) {
+        $pedidos = Pedidos::where('id', $idPedido)
+            ->with('alumno')
+            ->with('materia')
+            ->with('clases')
+            ->get();
+
         return $pedidos;
     }
 

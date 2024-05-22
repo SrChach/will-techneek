@@ -12,4 +12,8 @@ class UserException extends NotifiableException {
     public static function notCreated() {
         return new self('Error while creating user', 400);
     }
+
+    public static function notFound() {
+        return new self('Usuario no encontrado', 404);
+    }
 }
