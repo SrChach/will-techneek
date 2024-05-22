@@ -54,9 +54,27 @@ class User extends Authenticatable
         return $this->hasOne(Roles::class, 'idRol');
     }
 
-    function clases(): HasMany
+    public function pedidos(): HasMany
+    {
+        return $this->hasMany(Pedidos::class, 'idAlumno');
+    }
+
+    // TODO cambiar a Clases Impartidas
+    function clasesImpartidas(): HasMany
     {
         return $this->hasMany(Clases::class, 'idProfesor');
+    }
+
+    function clases(): HasManyThrough
+    {
+        return $this->hasManyThrough(
+            Clases::class,
+            Pedidos::class,
+            'idAlumno', // id que conecta la tabla intermedia con esta
+            'idPedido', // id de la tabla destino a comparar con la intermedia (VER DESTINO)
+            'id', // id de esta tabla a comparar con la intermedia
+            'id' // id que conecta la tabla intermedia con el destino
+        );
     }
 
     function materias(): HasManyThrough
@@ -69,6 +87,10 @@ class User extends Authenticatable
             'id', // id de esta tabla a comparar con la intermedia
             'idMateria' // id que conecta la tabla intermedia con el destino
         );
+    }
+
+    function horarios(): HasMany {
+        return $this->hasMany(Horarios::class, 'idUsuario');
     }
 
     static function countUsuariosForRol($idRol)

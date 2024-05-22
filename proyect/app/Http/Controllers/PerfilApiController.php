@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Application\Horario;
 use App\Exceptions\HorarioException;
 use App\Exceptions\PerfilException;
 use App\Models\Dias;
@@ -133,24 +134,7 @@ class PerfilApiController extends Controller
         $dia = $request->dia;
         $hora = $request->hora;
 
-        $horaInicio = date("H:i:s", strtotime($hora));
-        $horaFinal = date('H:i:s', strtotime('+1 hour', strtotime($horaInicio)));
-
-        $existentHorario = Horarios::where('idUsuario', $idUsuario)
-            ->where('idDias', $dia)
-            ->where('hora_inicio', $horaInicio)
-            ->first();
-
-        if (isset($existentHorario)) {
-            throw HorarioException::existentHorario();
-        }
-
-        $horario = new Horarios();
-        $horario->idUsuario = $idUsuario;
-        $horario->idDias = $dia;
-        $horario->hora_inicio = $horaInicio;
-        $horario->hora_final = $horaFinal;
-        $horario->save();
+        $horario = Horario::addHorario($idUsuario, $dia, $hora);
 
         return response()->json($horario, 201);
     }
@@ -166,17 +150,8 @@ class PerfilApiController extends Controller
         $dia = $request->dia;
 
         $horaInicio = date("H:i:s", strtotime($request->hora));
+        Horario::deleteHorario($idUsuario, $dia, $horaInicio);
 
-        $existentHorario = Horarios::where('idUsuario', $idUsuario)
-            ->where('idDias', $dia)
-            ->where('hora_inicio', $horaInicio)
-            ->first();
-
-        if (!$existentHorario) {
-            throw HorarioException::notFound();
-        }
-
-        $existentHorario->delete();
         return response()->json(null, 204);
     }
 }

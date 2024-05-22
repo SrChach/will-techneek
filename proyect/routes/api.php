@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AlumnoApiController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginRegisterController;
@@ -59,6 +60,18 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('{idProfesor}', [ProfesorApiController::class, 'get']);
         Route::get('materias/list', [ProfesorApiController::class, 'showMateriasUsuarios']);
         Route::get('{profesorId}/materias/', [ProfesorApiController::class, 'getMaterias']);
+    });
+
+    Route::prefix('alumno')->group(function () {
+        Route::get('', [AlumnoApiController::class, 'index']);
+        Route::get('{idAlumno}/pedidos', [AlumnoApiController::class, 'pedidos']);
+        Route::get('{idAlumno}/horarios', [AlumnoApiController::class, 'horarios']);
+
+        /** Extract */
+        Route::post('{idAlumno}/horario', [AlumnoApiController::class, 'addHorario']);
+        Route::delete('{idAlumno}/horario', [AlumnoApiController::class, 'deleteHorario']);
+        Route::patch('{idAlumno}/clases', [AlumnoApiController::class, 'programarClase']);
+        Route::get('{idAlumno}/clases', [AlumnoApiController::class, 'clasesPorAlumno']);
     });
 
     Route::prefix('clases')->group(function () {

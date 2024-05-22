@@ -244,10 +244,6 @@ class ClasesApiController extends Controller
         ]);
     }
 
-    /**
-     * programacion de la claase
-     * 
-     */
     public function programarClase(Request $request, $idClase)
     {
 
