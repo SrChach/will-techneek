@@ -12,6 +12,6 @@ class None extends Middleware
      */
     protected function redirectTo(Request $request): ?string
     {
-        return $request
+        return $request;
     }
 }

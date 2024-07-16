@@ -1,0 +1,44 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "API Swagger",
+        "description": "API CRUD Materias",
+        "version": "1.0"
+    },
+    "servers": [
+        {
+            "url": "http://localhost:8080"
+        }
+    ],
+    "paths": {
+        "/api/materias": {
+            "get": {
+                "tags": [
+                    "materias"
+                ],
+                "summary": "List of all materias",
+                "description": "Devuelve un listado de materias",
+                "operationId": "098770264044010883acbbbd66864d95",
+                "responses": {
+                    "200": {
+                        "description": "Successful Operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {}
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "materias",
+            "description": "materias"
+        }
+    ]
+}
