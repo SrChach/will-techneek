@@ -14,9 +14,19 @@ return new class extends Migration
         Schema::create('horarios', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('idUsuario');
-            $table->foreign('idUsuario')->references('id')->on('users')->constrained()->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('idUsuario')
+                ->references('id')
+                ->on('users')
+                ->constrained()
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
             $table->unsignedBigInteger('idDias');
-            $table->foreign('idDias')->references('id')->on('dias')->constrained()->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('idDias')
+                ->references('id')
+                ->on('dias')
+                ->constrained()
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
             $table->time('hora_inicio');
             $table->time('hora_final');
             $table->timestamps();

@@ -14,11 +14,26 @@ return new class extends Migration
         Schema::create('bitacoras', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('idClase');
-            $table->foreign('idClase')->references('id')->on('clases')->constrained()->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('idClase')
+                ->references('id')
+                ->on('clases')
+                ->constrained()
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
             $table->unsignedBigInteger('idCalificado');
-            $table->foreign('idCalificado')->references('id')->on('users')->constrained()->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('idCalificado')
+                ->references('id')
+                ->on('users')
+                ->constrained()
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
             $table->unsignedBigInteger('idCalificador');
-            $table->foreign('idCalificador')->references('id')->on('users')->constrained()->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('idCalificador')
+                ->references('id')
+                ->on('users')
+                ->constrained()
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
             $table->string('calificacion', 20);
             $table->text('comentarios', 250);
             $table->timestamps();

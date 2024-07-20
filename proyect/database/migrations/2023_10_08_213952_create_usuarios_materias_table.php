@@ -14,9 +14,19 @@ return new class extends Migration
         Schema::create('usuarios_materias', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('idUsuario');
-            $table->foreign('idUsuario')->references('id')->on('users')->constrained()->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('idUsuario')
+                ->references('id')
+                ->on('users')
+                ->constrained()
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
             $table->unsignedBigInteger('idMateria');
-            $table->foreign('idMateria')->references('id')->on('materias')->constrained()->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('idMateria')
+                ->references('id')
+                ->on('materias')
+                ->constrained()
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
             $table->timestamps();
         });
     }

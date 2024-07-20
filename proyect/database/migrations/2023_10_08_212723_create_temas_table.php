@@ -14,7 +14,12 @@ return new class extends Migration
         Schema::create('temas', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('idMateria');
-            $table->foreign('idMateria')->references('id')->on('materias')->constrained()->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('idMateria')
+                ->references('id')
+                ->on('materias')
+                ->constrained()
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
             $table->string('numero', 150);
             $table->string('nombre', 150);
             $table->timestamps();
