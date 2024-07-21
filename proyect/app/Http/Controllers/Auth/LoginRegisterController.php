@@ -15,6 +15,7 @@ class LoginRegisterController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
+     * 
      */
     public function register(Request $request)
     {
@@ -52,6 +53,29 @@ class LoginRegisterController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
+     * 
+     * @OA\Post(
+     *      path="/api/login",
+     *      tags={"Auth"},
+     *      summary="Login de Usuarios",
+     *      description="Devuelve un token a partir de los datos de autenticacion",
+     *      @OA\RequestBody(
+     *          @OA\MediaType(
+     *              mediaType="application/json",
+     *              @OA\Schema(ref="#/components/schemas/User")
+     *          ),
+     *      ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="Login Exitoso",
+     *          @OA\JsonContent(),
+     *      ),
+     *      @OA\Response(
+     *          response=401,
+     *          description="Credenciales invalidas",
+     *          @OA\JsonContent(),
+     *      )
+     * )
      */
     public function login(Request $request)
     {

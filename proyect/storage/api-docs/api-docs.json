@@ -33,12 +33,120 @@
                     }
                 }
             }
+        },
+        "/api/materias/{materiaId}/profesores": {
+            "get": {
+                "tags": [
+                    "materias"
+                ],
+                "summary": "Profesores asignados",
+                "description": "Devuelve un listado de materias",
+                "operationId": "7172bc1ee596884abd556938395fc669",
+                "parameters": [
+                    {
+                        "name": "materiaId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {}
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/login": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Login de Usuarios",
+                "description": "Devuelve un token a partir de los datos de autenticacion",
+                "operationId": "917524fb4dc2c3895da3af1aebf7067e",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/User"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Login Exitoso",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Credenciales invalidas",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "User": {
+                "title": "Auth Model",
+                "properties": {
+                    "email": {
+                        "description": "Correo del usuario",
+                        "type": "string"
+                    },
+                    "password": {
+                        "description": "password del usuario",
+                        "type": "string"
+                    }
+                },
+                "type": "object",
+                "xml": {
+                    "name": "User"
+                }
+            }
+        },
+        "securitySchemes": {
+            "bearerAuth": {
+                "type": "http",
+                "name": "bearerAuth",
+                "in": "header",
+                "scheme": "bearer"
+            }
         }
     },
     "tags": [
         {
+            "name": "Auth",
+            "description": "Endpoints de Autenticación"
+        },
+        {
             "name": "materias",
-            "description": "materias"
+            "description": "Endpoints de Materias"
         }
     ]
 }

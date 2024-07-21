@@ -170,6 +170,7 @@ return [
         App\Providers\RouteServiceProvider::class,
         \App\Providers\ServiceViewComposer::class,
         Ladumor\OneSignal\OneSignalServiceProvider::class,
+        L5Swagger\L5SwaggerServiceProvider::class,
     ])->toArray(),
 
     /*

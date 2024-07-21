@@ -12,9 +12,45 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\DB;
 use Laravel\Sanctum\HasApiTokens;
 
+/**
+ * @OA\Schema(
+ *     type="object",
+ *     title="Auth Model",
+ *     @OA\Property(
+ *         property="email",
+ *         description="Correo del usuario",
+ *         type="string",
+ *     ),
+ *     @OA\Property(
+ *         property="password",
+ *         description="password del usuario",
+ *         type="string"
+ *     ),
+ *     @OA\Xml(
+ *         name="User"
+ *     )
+ * )
+ */
 class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
+
+    /**
+     * @OA\Property(
+     *     format="int64",
+     *     description="userId",
+     *     title="userId",
+     * ),
+     * @OA\Property(
+     *     format="string",
+     *     title="email",
+     * ),
+     * @OA\Property(
+     *     format="string",
+     *     title="password",
+     * )
+     *
+     */
 
     /**
      * The attributes that are mass assignable.

@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
 use App\Application\Clases\Materia;
 use App\Application\Clases\Tema;
 use App\Exceptions\MateriasException;
+use App\Http\Controllers\Controller;
 use App\Models\Roles;
 use Illuminate\Http\Request;
 
@@ -19,6 +20,29 @@ class MateriasApiController extends Controller
         return response()->json(Materia::list_full());
     }
 
+    /**
+     * @OA\Get(
+     *      path="/api/materias/{materiaId}/profesores",
+     *      tags={"materias"},
+     *      security={{ "bearerAuth": {} }},
+     *      @OA\Parameter(
+     *          in="path",
+     *          name="materiaId",
+     *          required=true,
+     *          @OA\Schema(type="string")
+     *      ),
+     *      summary="Profesores asignados",
+     *      description="Devuelve un listado de materias",
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successful Operation",
+     *          @OA\JsonContent(
+     *              type="array",
+     *              @OA\Items()
+     *          )
+     *      )
+     * )
+     */
     public function getProfesores($materiaId) {
         return Materia::getUsuariosByRole($materiaId, Roles::PROFESOR);
     }

@@ -13,6 +13,21 @@ use Illuminate\Http\Request;
  *      description="API CRUD Materias"
  * )
  * @OA\Server(url="http://localhost:8080")
+ * @OA\SecurityScheme(
+ *      securityScheme="bearerAuth",
+ *      in="header",
+ *      name="bearerAuth",
+ *      type="http",
+ *      scheme="bearer",
+ * ),
+ * @OA\Tag(
+ *     name="Auth",
+ *     description="Endpoints de Autenticación",
+ * )
+ * @OA\Tag(
+ *     name="materias",
+ *     description="Endpoints de Materias",
+ * )
  */
 
 class MateriaController extends Controller

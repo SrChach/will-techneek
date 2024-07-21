@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginRegisterController;
 use App\Http\Controllers\ClasesApiController;
 use App\Http\Controllers\ClasesController;
-use App\Http\Controllers\MateriasApiController;
+use App\Http\Controllers\Api\MateriasApiController;
 use App\Http\Controllers\PedidosApiController;
 use App\Http\Controllers\PerfilApiController;
 use App\Http\Controllers\ProfesorApiController;
