@@ -32,6 +32,43 @@
                         }
                     }
                 }
+            },
+            "post": {
+                "tags": [
+                    "materias"
+                ],
+                "summary": "Crear Materia",
+                "description": "Crea una materia",
+                "operationId": "b23c59196c7208b0467e6747323aefeb",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Materias"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Successful Operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             }
         },
         "/api/materias/{materiaId}/profesores": {
@@ -112,6 +149,34 @@
     },
     "components": {
         "schemas": {
+            "Materias": {
+                "title": "Auth Model",
+                "properties": {
+                    "nombre": {
+                        "description": "Nombre de la materia",
+                        "type": "string"
+                    },
+                    "urlIcon": {
+                        "description": "icono de la materia",
+                        "type": "string"
+                    },
+                    "costo": {
+                        "description": "costo por hora de la materia",
+                        "type": "string"
+                    },
+                    "temas": {
+                        "description": "Arreglo de temas a guardar",
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    }
+                },
+                "type": "object",
+                "xml": {
+                    "name": "Materias"
+                }
+            },
             "User": {
                 "title": "Auth Model",
                 "properties": {

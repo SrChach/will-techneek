@@ -8,9 +8,64 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Support\Facades\DB;
 
+/**
+ * @OA\Schema(
+ *     type="object",
+ *     title="Auth Model",
+ *     @OA\Property(
+ *         property="nombre",
+ *         description="Nombre de la materia",
+ *         type="string",
+ *     ),
+ *     @OA\Property(
+ *         property="urlIcon",
+ *         description="icono de la materia",
+ *         type="string"
+ *     ),
+ *     @OA\Property(
+ *         property="costo",
+ *         description="costo por hora de la materia",
+ *         type="string"
+ *     ),
+ *     @OA\Property(
+ *         property="temas",
+ *         description="Arreglo de temas a guardar",
+ *         type="array",
+ *         @OA\Items(type="string")
+ *     ),
+ *     @OA\Xml(
+ *         name="Materias"
+ *     )
+ * )
+ */
 class Materias extends Model
 {
     use HasFactory;
+
+    /**
+     * @OA\Property(
+     *     format="int64",
+     *     description="idMateria",
+     *     title="idMateria",
+     * ),
+     * @OA\Property(
+     *     format="string",
+     *     title="nombre",
+     * ),
+     * @OA\Property(
+     *     format="string",
+     *     title="icono",
+     * ),
+     * @OA\Property(
+     *     format="array",
+     *     title="temas",
+     * ),
+     * @OA\Property(
+     *     format="float",
+     *     title="costo",
+     * ),
+     *
+     */
 
     /**
      * The table associated with the model.

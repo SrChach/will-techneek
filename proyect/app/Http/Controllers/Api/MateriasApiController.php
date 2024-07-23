@@ -51,7 +51,29 @@ class MateriasApiController extends Controller
         return Materia::getUsuariosByRole($materiaId, Roles::ALUMNO);
     }
 
-    // TODO validate
+    /**
+     * @OA\Post(
+     *      path="/api/materias",
+     *      tags={"materias"},
+     *      security={{ "bearerAuth": {} }},
+     *      @OA\RequestBody(
+     *          @OA\MediaType(
+     *              mediaType="application/json",
+     *              @OA\Schema(ref="#/components/schemas/Materias")
+     *          ),
+     *      ),
+     *      summary="Crear Materia",
+     *      description="Crea una materia",
+     *      @OA\Response(
+     *          response=201,
+     *          description="Successful Operation",
+     *          @OA\JsonContent(
+     *              type="array",
+     *              @OA\Items(type="string")
+     *          )
+     *      )
+     * )
+     */
     public function store(Request $request) {
         $materia = Materia::create($request->nombre, $request->urlIcon, $request->costo);
 
