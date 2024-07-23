@@ -23,75 +23,79 @@ use App\Http\Controllers\TemasApiController;
 |
 */
 
-Route::post('register', [LoginRegisterController::class, 'register']);
-Route::post('profesor/register', [ProfesorApiController::class, 'store']);
+Route::group(['middleware' => 'cors'], function () {
 
-Route::controller(LoginRegisterController::class)->group(function() {
-    Route::post('/login', 'login');
-});
+    Route::post('register', [LoginRegisterController::class, 'register']);
+    Route::post('profesor/register', [ProfesorApiController::class, 'store']);
 
-Route::middleware([])->group(function() {
-    Route::get('materias', [MateriasApiController::class, 'index']);
-});
-
-Route::middleware('auth:sanctum')->group(function () {
-    Route::prefix('materias')->group(function () {
-        Route::get('{materiaId}/profesores', [MateriasApiController::class, 'getProfesores']);
-        Route::get('{materiaId}/alumnos', [MateriasApiController::class, 'getAlumnos']);
-        Route::get('full', [MateriasApiController::class, 'fullList']);
-        Route::post('', [MateriasApiController::class, 'store']);
-
-        Route::get('{idMaterias}/temas', [TemasApiController::class, 'list']);
-        Route::post('{idMaterias}/temas', [TemasApiController::class, 'addBatch']);
+    Route::controller(LoginRegisterController::class)->group(function() {
+        Route::post('/login', 'login');
     });
 
-    Route::prefix('pedidos')->group(function () {
-        Route::get('', [PedidosApiController::class, 'index']);
-        Route::get('{idPedido}', [PedidosApiController::class, 'get']);
-
-        Route::post('', [PedidosApiController::class, 'store']);
-        Route::get('folio/{folio}', [PedidosApiController::class, 'show']);
-        Route::get('folio/{folio}/detalle', [PedidosApiController::class, 'resumenPedido']);
-        Route::put('folio/{folio}', [PedidosApiController::class, 'pedidoPagado']);
+    Route::middleware([])->group(function() {
+        Route::get('materias', [MateriasApiController::class, 'index']);
     });
 
-    Route::prefix('profesor')->group(function () {
-        Route::get('', [ProfesorApiController::class, 'list']);
-        Route::get('{idProfesor}', [ProfesorApiController::class, 'get']);
-        Route::get('materias/list', [ProfesorApiController::class, 'showMateriasUsuarios']);
-        Route::get('{profesorId}/materias/', [ProfesorApiController::class, 'getMaterias']);
+    Route::middleware('auth:sanctum')->group(function () {
+        Route::prefix('materias')->group(function () {
+            Route::get('{materiaId}/profesores', [MateriasApiController::class, 'getProfesores']);
+            Route::get('{materiaId}/alumnos', [MateriasApiController::class, 'getAlumnos']);
+            Route::get('full', [MateriasApiController::class, 'fullList']);
+            Route::post('', [MateriasApiController::class, 'store']);
+
+            Route::get('{idMaterias}/temas', [TemasApiController::class, 'list']);
+            Route::post('{idMaterias}/temas', [TemasApiController::class, 'addBatch']);
+        });
+
+        Route::prefix('pedidos')->group(function () {
+            Route::get('', [PedidosApiController::class, 'index']);
+            Route::get('{idPedido}', [PedidosApiController::class, 'get']);
+
+            Route::post('', [PedidosApiController::class, 'store']);
+            Route::get('folio/{folio}', [PedidosApiController::class, 'show']);
+            Route::get('folio/{folio}/detalle', [PedidosApiController::class, 'resumenPedido']);
+            Route::put('folio/{folio}', [PedidosApiController::class, 'pedidoPagado']);
+        });
+
+        Route::prefix('profesor')->group(function () {
+            Route::get('', [ProfesorApiController::class, 'list']);
+            Route::get('{idProfesor}', [ProfesorApiController::class, 'get']);
+            Route::get('materias/list', [ProfesorApiController::class, 'showMateriasUsuarios']);
+            Route::get('{profesorId}/materias/', [ProfesorApiController::class, 'getMaterias']);
+        });
+
+        Route::prefix('alumno')->group(function () {
+            Route::get('', [AlumnoApiController::class, 'index']);
+            Route::get('{idAlumno}/pedidos', [AlumnoApiController::class, 'pedidos']);
+            Route::get('{idAlumno}/horarios', [AlumnoApiController::class, 'horarios']);
+
+            /** Extract */
+            Route::post('{idAlumno}/horario', [AlumnoApiController::class, 'addHorario']);
+            Route::delete('{idAlumno}/horario', [AlumnoApiController::class, 'deleteHorario']);
+            Route::patch('{idAlumno}/clases', [AlumnoApiController::class, 'programarClase']);
+            Route::get('{idAlumno}/clases', [AlumnoApiController::class, 'clasesPorAlumno']);
+        });
+
+        Route::prefix('clases')->group(function () {
+            Route::get('', [ClasesApiController::class, 'list']);
+
+            Route::get('all', [ClasesController::class, 'clasesIndex']);
+        });
+
+        Route::get('user', function (Request $request) {
+            return $request->user();
+        });
+
+        Route::prefix('perfil')->group(function () {
+            Route::put('password', [PerfilApiController::class, 'updatePassword']);
+            Route::post('materia', [PerfilApiController::class, 'addMateria']);
+            Route::delete('materia', [PerfilApiController::class, 'deleteMateria']);
+            Route::post('horario', [PerfilApiController::class, 'addHorario']);
+            Route::delete('horario', [PerfilApiController::class, 'deleteHorario']);
+        });
+
+        Route::get('logout', [LoginRegisterController::class, 'logout']);
     });
 
-    Route::prefix('alumno')->group(function () {
-        Route::get('', [AlumnoApiController::class, 'index']);
-        Route::get('{idAlumno}/pedidos', [AlumnoApiController::class, 'pedidos']);
-        Route::get('{idAlumno}/horarios', [AlumnoApiController::class, 'horarios']);
-
-        /** Extract */
-        Route::post('{idAlumno}/horario', [AlumnoApiController::class, 'addHorario']);
-        Route::delete('{idAlumno}/horario', [AlumnoApiController::class, 'deleteHorario']);
-        Route::patch('{idAlumno}/clases', [AlumnoApiController::class, 'programarClase']);
-        Route::get('{idAlumno}/clases', [AlumnoApiController::class, 'clasesPorAlumno']);
-    });
-
-    Route::prefix('clases')->group(function () {
-        Route::get('', [ClasesApiController::class, 'list']);
-
-        Route::get('all', [ClasesController::class, 'clasesIndex']);
-    });
-
-    Route::get('user', function (Request $request) {
-        return $request->user();
-    });
-
-    Route::prefix('perfil')->group(function () {
-        Route::put('password', [PerfilApiController::class, 'updatePassword']);
-        Route::post('materia', [PerfilApiController::class, 'addMateria']);
-        Route::delete('materia', [PerfilApiController::class, 'deleteMateria']);
-        Route::post('horario', [PerfilApiController::class, 'addHorario']);
-        Route::delete('horario', [PerfilApiController::class, 'deleteHorario']);
-    });
-
-    Route::get('logout', [LoginRegisterController::class, 'logout']);
 });
 

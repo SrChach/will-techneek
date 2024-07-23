@@ -150,7 +150,7 @@
     "components": {
         "schemas": {
             "Materias": {
-                "title": "Auth Model",
+                "title": "Materia Model",
                 "properties": {
                     "nombre": {
                         "description": "Nombre de la materia",

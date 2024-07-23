@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\DB;
 /**
  * @OA\Schema(
  *     type="object",
- *     title="Auth Model",
+ *     title="Materia Model",
  *     @OA\Property(
  *         property="nombre",
  *         description="Nombre de la materia",
