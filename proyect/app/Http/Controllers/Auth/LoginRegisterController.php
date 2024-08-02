@@ -62,7 +62,7 @@ class LoginRegisterController extends Controller
      *      @OA\RequestBody(
      *          @OA\MediaType(
      *              mediaType="application/json",
-     *              @OA\Schema(ref="#/components/schemas/User")
+     *              @OA\Schema(ref="#/components/schemas/ApiLoginRequest")
      *          ),
      *      ),
      *      @OA\Response(

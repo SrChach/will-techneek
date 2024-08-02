@@ -149,6 +149,23 @@
     },
     "components": {
         "schemas": {
+            "ApiLoginRequest": {
+                "title": "Login Request",
+                "properties": {
+                    "email": {
+                        "description": "Correo del usuario",
+                        "type": "string"
+                    },
+                    "password": {
+                        "description": "password del usuario",
+                        "type": "string"
+                    }
+                },
+                "type": "object",
+                "xml": {
+                    "name": "ApiLoginRequest"
+                }
+            },
             "Materias": {
                 "title": "Materia Model",
                 "properties": {
