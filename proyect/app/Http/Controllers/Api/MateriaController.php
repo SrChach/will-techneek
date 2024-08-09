@@ -12,7 +12,7 @@ use Illuminate\Http\Request;
  *      version="1.0",
  *      description="API CRUD Materias"
  * )
- * @OA\Server(url="http://localhost:8080")
+ * @OA\Server(url=L5_SWAGGER_CONST_HOST)
  * @OA\SecurityScheme(
  *      securityScheme="bearerAuth",
  *      in="header",
@@ -32,8 +32,8 @@ use Illuminate\Http\Request;
 
 class MateriaController extends Controller
 {
-    
-    
+
+
     /**
      * @OA\Get(
      *      path="/api/materias",
@@ -50,7 +50,7 @@ class MateriaController extends Controller
      *      )
      * )
      */
-    public function getMateria($idMateria)  
+    public function getMateria($idMateria)
     {
         $materia = Materias::find($idMateria);
 
