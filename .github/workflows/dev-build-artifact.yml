@@ -43,7 +43,7 @@ env:
   GAR_LOCATION: 'us-south1' # TODO: update to your region
   REPOSITORY: 'samples' # TODO: update to your Artifact Registry docker repository name
   IMAGE: 'techneek-dev-external'
-  WORKLOAD_IDENTITY_PROVIDER: 'projects/653597285652/locations/global/workloadIdentityPools/gha-ext-dev/subject/SUBJECT_ATTRIBUTE_VALUE' # TODO: update to your workload identity provider
+  WORKLOAD_IDENTITY_PROVIDER: 'projects/653597285652/locations/global/workloadIdentityPools/gha-test-dev/providers/github' # TODO: update to your workload identity provider
 
 jobs:
   setup-build-publish-deploy:
