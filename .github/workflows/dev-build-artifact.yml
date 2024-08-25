@@ -41,7 +41,7 @@ on:
 env:
   PROJECT_ID: 'webpages-364602' # TODO: update to your Google Cloud project ID
   GAR_LOCATION: 'us-south1' # TODO: update to your region
-  REPOSITORY: 'samples' # TODO: update to your Artifact Registry docker repository name
+  REPOSITORY: 'dev-external' # TODO: update to your Artifact Registry docker repository name
   IMAGE: 'techneek-dev-external'
   WORKLOAD_IDENTITY_PROVIDER: 'projects/653597285652/locations/global/workloadIdentityPools/gha-test-dev/providers/github' # TODO: update to your workload identity provider
 
