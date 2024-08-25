@@ -88,6 +88,6 @@ jobs:
             --build-arg GITHUB_REF="${GITHUB_REF}" \
             .
 
-          gcloud auth print-access-token | docker login -u oauth2accesstoken --password-stdin https://${GAR_LOCATION}-docker.pkg.dev
+          echo "-${ GOOGLE_APPLICATION_CREDENTIALS }-"
           docker push "${DOCKER_TAG}"
 
