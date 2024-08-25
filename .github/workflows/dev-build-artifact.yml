@@ -91,7 +91,8 @@ jobs:
           docker image pull nginx:1.27-alpine
           docker image tag nginx:1.27-alpine ${DOCKER_TEST}
 
-          gcloud auth print-access-token | docker login -u oauth2accesstoken --password-stdin https://${GAR_LOCATION}-docker.pkg.dev
           gcloud auth configure-docker "${GAR_LOCATION}-docker.pkg.dev" --quiet
+          gcloud auth print-access-token | docker login -u oauth2accesstoken --password-stdin https://${GAR_LOCATION}-docker.pkg.dev
+          echo "$(gcloud auth print-identity-token) | $(gcloud projects get-iam-policy webpages-364602)"
           docker push "${DOCKER_TEST}"
 
