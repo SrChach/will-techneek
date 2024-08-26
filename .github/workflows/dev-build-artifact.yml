@@ -9,7 +9,7 @@ env:
   PROJECT_ID: 'webpages-364602'
   GAR_LOCATION: 'us-south1' # TODO: update to your region
   REPOSITORY: 'dev-external' # TODO: update to your Artifact Registry docker repository name
-  IMAGE: 'deleteme-gha'
+  IMAGE: 'techneek-app'
 
 jobs:
   setup-build-publish-deploy:
