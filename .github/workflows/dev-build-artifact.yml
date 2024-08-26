@@ -11,6 +11,7 @@ env:
   REPOSITORY: 'dev-external' # TODO: update to your Artifact Registry docker repository name
   IMAGE: 'techneek-app'
 
+# TODO: Get data from secrets
 jobs:
   setup-build-publish-deploy:
     name: 'Setup, Build, Publish, and Deploy'
@@ -26,13 +27,22 @@ jobs:
       - uses: 'google-github-actions/auth@v2'
         with:
           credentials_json: '${{ secrets.GCP_SERVICE_ACCOUNT }}'
+      - name: 'Set up Cloud SDK'
+        uses: 'google-github-actions/setup-gcloud@v2'
+        with:
+          version: '>= 363.0.0'
+      - name: 'Download from GSutil'
+        run: |-
+          gsutil cp gs://srchach/proyects/techneek/dump.sql ./dump.sql
+          gsutil cp gs://srchach/proyects/techneek/.env ./proyect/.env
       - name: Login to GAR
         uses: docker/login-action@v3
         with:
+          # TODO: manage GAR_LOCATION
           registry: us-south1-docker.pkg.dev
           username: _json_key
           password: ${{ secrets.GCP_SERVICE_ACCOUNT }}
-      - name: print-secret
+      - name: build-and-push
         run: |-
           DOCKER_TAG="${GAR_LOCATION}-docker.pkg.dev/${PROJECT_ID}/${REPOSITORY}/${IMAGE}:${GITHUB_SHA}"
           
