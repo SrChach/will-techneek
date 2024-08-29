@@ -28,3 +28,5 @@ Sin embargo, necesitamos tener estos pre-requisitos:
 > Opcional: Agregar variables de entorno desde docker-compose para desarrollo
 
 ## Despliegue
+
+El pipeline de github actions está activado. Pendiente de documentar
