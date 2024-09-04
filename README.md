@@ -29,4 +29,6 @@ Sin embargo, necesitamos tener estos pre-requisitos:
 
 ## Despliegue
 
-El pipeline de github actions está activado. Pendiente de documentar
+El pipeline de github actions está activado para la rama de dev. Pendiente de documentar
+
+
