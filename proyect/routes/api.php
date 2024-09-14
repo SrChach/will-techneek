@@ -34,6 +34,8 @@ Route::group(['middleware' => 'cors'], function () {
 
     Route::middleware([])->group(function() {
         Route::get('materias', [MateriasApiController::class, 'index']);
+
+        Route::get('materias/with/{userType}', [MateriasApiController::class, 'withUsers']);
     });
 
     Route::middleware('auth:sanctum')->group(function () {

@@ -20,6 +20,12 @@ class MateriasApiController extends Controller
         return response()->json(Materia::list_full());
     }
 
+    public function withUsers($userType) {
+        $roleNumber = Roles::getRole($userType);
+
+        return response()->json(Materia::withUsers($roleNumber));
+    }
+
     /**
      * @OA\Get(
      *      path="/api/materias/{materiaId}/profesores",

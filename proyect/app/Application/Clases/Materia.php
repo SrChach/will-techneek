@@ -15,6 +15,14 @@ class Materia
         return Materias::with('usuarios')->get();
     }
 
+    public static function withUsers($userType = Roles::PROFESOR)
+    {
+        return Materias::with(['usuarios' => function($query) use ($userType) {
+                $query->where('idRol', $userType);
+            }])
+            ->get();
+    }
+
     public static function getUsuariosByRole($materiaId, $rolId = Roles::DEFAULT) {
         $materia = Materias::find($materiaId);
         if (!$materia) {
