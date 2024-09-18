@@ -11,8 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
+        // TODO revert change. not pass to prd
         Schema::table('pedidos', function (Blueprint $table) {
-            $table->float('total')->default(0)->change();
+            $table->float('total')->default(0)->nullable()->change();
         });
     }
 
