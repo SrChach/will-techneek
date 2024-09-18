@@ -52,6 +52,7 @@ Route::group(['middleware' => 'cors'], function () {
         Route::prefix('pedidos')->group(function () {
             Route::get('', [PedidosApiController::class, 'index']);
             Route::get('{idPedido}', [PedidosApiController::class, 'get']);
+            Route::get('alumno/{idAlumno}', [PedidosApiController::class, 'getPedidosAlumno']);
 
             Route::post('', [PedidosApiController::class, 'store']);
             Route::get('folio/{folio}', [PedidosApiController::class, 'show']);

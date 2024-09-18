@@ -41,6 +41,12 @@ class PedidosApiController extends Controller
         return response()->json($pedidos);
     }
 
+    public function getPedidosAlumno($idAlumno) {
+        $pedidos = Pedido::getPedidosAlumno($idAlumno);
+
+        return response()->json($pedidos);
+    }
+
     // TODO add notificaciones a usuarios, mail y admin
     public function store(Request $request)
     {

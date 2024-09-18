@@ -22,6 +22,16 @@ class Pedido
 
         return $pedidos;
     }
+    
+    public static function getPedidosAlumno($idAlumno) {
+        $pedidos = Pedidos::where('idAlumno', $idAlumno)
+            ->with('alumno')
+            ->with('materia')
+            ->with('clases')
+            ->get();
+
+        return $pedidos;
+    }
 
     public static function getByFolio($folio) {
         return Pedidos::where('folio', $folio)->first();
