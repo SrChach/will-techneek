@@ -63,6 +63,7 @@ Route::group(['middleware' => 'cors'], function () {
         Route::prefix('profesor')->group(function () {
             Route::get('', [ProfesorApiController::class, 'list']);
             Route::get('{idProfesor}', [ProfesorApiController::class, 'get']);
+            Route::post('materia/{idMateria}', [ProfesorApiController::class, 'addMateria']);
             Route::get('materias/list', [ProfesorApiController::class, 'showMateriasUsuarios']);
             Route::get('{profesorId}/materias/', [ProfesorApiController::class, 'getMaterias']);
         });
@@ -77,6 +78,7 @@ Route::group(['middleware' => 'cors'], function () {
             Route::delete('{idAlumno}/horario', [AlumnoApiController::class, 'deleteHorario']);
             Route::patch('{idAlumno}/clases', [AlumnoApiController::class, 'programarClase']);
             Route::get('{idAlumno}/clases', [AlumnoApiController::class, 'clasesPorAlumno']);
+            Route::post('calificar/profesor/{idProfesor}', [AlumnoApiController::class, 'calificarProfesor']);
         });
 
         Route::prefix('clases')->group(function () {

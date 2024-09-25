@@ -25,8 +25,11 @@ class UsuariosMaterias extends Model
      */
     protected $fillable = [
         'idUsuario',
-        'idMateria'
+        'idMateria',
+        'is_authority',
+        'authority_calification'
     ];
+
 
     //! funcion para obtener a los ultimos 5 usuarios asociados con una materia segu el id de la misma y el idRol
     static function getLastUsuariosForMateria($idMateria, $idRol) 

@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Application\Profesor;
 use App\Application\User as ApplicationUser;
+use App\Exceptions\MateriasException;
+use App\Exceptions\UserException;
 use App\Mail\BienvenidaProfesorMailer;
 use App\Models\Clases;
 use App\Models\EstadosClases;
@@ -29,7 +31,35 @@ class ProfesorApiController extends Controller
     }
     
     public static function showMateriasUsuarios() {
-        return UsuariosMaterias::all();
+        return UsuariosMaterias::where('is_authority', true)->get();
+    }
+
+    public static function addMateria(Request $request, $idMateria) {
+        $user = $request->user();
+
+        if (!$user) {
+            throw UserException::notFound();
+        }
+
+        if($user->idRol != Roles::PROFESOR) {
+            throw UserException::invalidRole('PROFESOR');
+        }
+
+        $existClass = UsuariosMaterias::where('idUsuario', $user->id)->where('idMateria', $idMateria)->get();
+
+        if (count($existClass) > 0) {
+            throw MateriasException::linkedUser();
+        }
+
+        $profesor_materia = new UsuariosMaterias();
+
+        $profesor_materia->idUsuario = $user->id;
+        $profesor_materia->idMateria = $idMateria;
+        $profesor_materia->is_authority = true;
+
+        $profesor_materia->save();
+
+        return response()->json([ 'message' => 'profesor asignado a la materia' ], 201);
     }
     
     public static function getMaterias($profesorId) {
@@ -74,10 +104,12 @@ class ProfesorApiController extends Controller
     {
         $profesor = Profesor::create($request->nombre, $request->apellidos, $request->email, $request->password);
 
+        $data['token'] = $profesor->createToken($request->email)->plainTextToken;
+        $data['user'] = $profesor;
         // TODO Send email
         // Mail::to($request->correo)->send(new BienvenidaProfesorMailer($request->nombre, $request->correo, $request->contraseña));
 
-        return response()->json($profesor, 201);
+        return response()->json($data, 201);
     }
 
     /**

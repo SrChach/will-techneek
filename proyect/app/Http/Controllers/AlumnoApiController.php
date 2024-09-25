@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Application\Horario;
 use App\Exceptions\ClasesException;
+use App\Exceptions\MateriasException;
 use App\Exceptions\PedidosException;
 use App\Exceptions\UserException;
 use App\Models\Clases;
@@ -21,6 +22,7 @@ use PhpParser\Builder\Class_;
 use App\Models\BitacorasAlumno;
 use App\Models\Pedidos;
 use App\Models\Roles;
+use App\Models\UsuariosMaterias;
 
 class AlumnoApiController extends Controller
 {
@@ -45,6 +47,22 @@ class AlumnoApiController extends Controller
         }
 
         return response()->json($pedidos);
+    }
+
+    // TODO Add validations for Alumnos have taken materias with profesor
+    public static function calificarProfesor(Request $request, $idProfesor)
+    {
+        $usuario_materia = UsuariosMaterias::where('idUsuario', $idProfesor)
+            ->where('idMateria', $request->materia)
+            ->where('is_authority', false)
+            ->first();
+
+        if (!$usuario_materia) {
+            throw MateriasException::unlinkedUser();
+        }
+        $usuario_materia->authority_calification = $request->calificacion;
+
+        return response()->json($usuario_materia);
     }
 
     public function horarios($idAlumno)

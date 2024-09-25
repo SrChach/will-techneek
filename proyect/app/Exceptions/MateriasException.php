@@ -16,4 +16,12 @@ class MateriasException extends NotifiableException {
     public static function notFound() {
         return new self('Esa materia no existe', 404);
     }
+
+    public static function unlinkedUser() {
+        return new self('Usuario no relacionado a la materia', 404);
+    }
+
+    public static function linkedUser() {
+        return new self('Usuario ya relacionado a la materia', 400);
+    }
 }

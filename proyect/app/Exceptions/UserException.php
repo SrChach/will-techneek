@@ -16,4 +16,8 @@ class UserException extends NotifiableException {
     public static function notFound() {
         return new self('Usuario no encontrado', 404);
     }
+
+    public static function invalidRole($roleString) {
+        return new self("Esta accion necesita el rol '$roleString'", 403);
+    }
 }
