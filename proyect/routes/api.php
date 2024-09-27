@@ -70,12 +70,13 @@ Route::group(['middleware' => 'cors'], function () {
 
         Route::prefix('alumno')->group(function () {
             Route::get('', [AlumnoApiController::class, 'index']);
-            Route::get('{idAlumno}/pedidos', [AlumnoApiController::class, 'pedidos']);
+            Route::get('pedidos', [AlumnoApiController::class, 'pedidos']);
             Route::get('{idAlumno}/horarios', [AlumnoApiController::class, 'horarios']);
 
             /** Extract */
             Route::post('{idAlumno}/horario', [AlumnoApiController::class, 'addHorario']);
             Route::delete('{idAlumno}/horario', [AlumnoApiController::class, 'deleteHorario']);
+            Route::get('clases', [AlumnoApiController::class, 'programarClase']);
             Route::patch('{idAlumno}/clases', [AlumnoApiController::class, 'programarClase']);
             Route::get('{idAlumno}/clases', [AlumnoApiController::class, 'clasesPorAlumno']);
             Route::post('calificar/profesor/{idProfesor}', [AlumnoApiController::class, 'calificarProfesor']);

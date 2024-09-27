@@ -25,7 +25,13 @@ class Clases extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'idPedido'
+        'idPedido',
+        'idProfesor',
+        'idEstados',
+        "fecha",
+        "hora",
+        "meeets",
+        "pagoProfesor"
     ];
 
     public function profesor(): BelongsTo {

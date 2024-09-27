@@ -37,8 +37,18 @@ class AlumnoApiController extends Controller
         return response()->json($alumnos);
     }
 
-    public function pedidos($idAlumno) {
-        $pedidos = Pedidos::where('idAlumno', $idAlumno)
+    public function pedidos(Request $request) {
+        $user = $request->user();
+
+        if (!$user) {
+            throw UserException::notFound();
+        }
+
+        if($user->idRol != Roles::ALUMNO) {
+            throw UserException::invalidRole('ALUMNO');
+        }
+
+        $pedidos = Pedidos::where('idAlumno', $user->id)
             ->with('clases')
             ->get();
 
@@ -54,7 +64,7 @@ class AlumnoApiController extends Controller
     {
         $usuario_materia = UsuariosMaterias::where('idUsuario', $idProfesor)
             ->where('idMateria', $request->materia)
-            ->where('is_authority', false)
+            ->where('is_authority', true)
             ->first();
 
         if (!$usuario_materia) {
@@ -98,6 +108,23 @@ class AlumnoApiController extends Controller
         Horario::deleteHorario($idAlumno, $dia, $horaInicio);
 
         return response()->json(null, 204);
+    }
+
+    public function listarClases(Request $request, $idPedido)
+    {
+        $user = $request->user();
+
+        if (!$user) {
+            throw UserException::notFound();
+        }
+
+        if($user->idRol != Roles::ALUMNO) {
+            throw UserException::invalidRole('ALUMNO');
+        }
+
+        $clases = Pedidos::where('idAlumno', $user->id)
+            ->with('clases')
+            ->get();
     }
 
     public function programarClase($idAlumno, $idClase, Request $request)
