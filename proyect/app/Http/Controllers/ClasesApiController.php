@@ -5,6 +5,12 @@ namespace App\Http\Controllers;
 date_default_timezone_set('America/Mexico_City');
 
 use App\Application\Clases\Clase;
+use App\Application\Clases\Materia;
+use App\Application\Profesor;
+use App\Exceptions\PedidosException;
+use App\Exceptions\ProfesorException;
+use App\Exceptions\UserException;
+use App\Exceptions\ValidationException;
 use App\Mail\ClaseProgramadaAlumnoMailer;
 use App\Mail\ClaseProgramadaProfesorMailer;
 use App\Models\Clases;
@@ -16,6 +22,8 @@ use App\Models\User;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 use App\Http\Controllers\OneSignalAlertController;
+use App\Models\Roles;
+use App\Models\UsuariosMaterias;
 use App\Notifications\ClaseAgendada;
 use App\Notifications\ClaseAgendadaProfesor;
 use Illuminate\Support\Arr;
@@ -29,150 +37,60 @@ use Illuminate\Support\Facades\Notification;
 class ClasesApiController extends Controller
 {
 
-    public function list() {
-        $clases = Clases::with('profesor')->with('pedido')->get();
-        
+    public function list(Request $request) {
+        $user = $request->user();
+
+        if (!$user) {
+            throw UserException::notFound();
+        }
+
+        if($user->idRol != Roles::ALUMNO) {
+            throw UserException::invalidRole('ALUMNO');
+        }
+
+        $pedidosQuery = Pedidos::select('id')->where('idAlumno', $user->id);
+        if ($request->status_pago) {
+            // TODO add validation for EstadosPagos
+            $pedidosQuery = $pedidosQuery->where('idEstadoPago', $request->status_pago);
+        }
+
+        $pedidos = $pedidosQuery->get();
+        if (!$pedidos) {
+            throw PedidosException::sinPedidos();
+        }
+
+        $pedidos_id = $pedidos->map(function ($time) {
+            return $time['id'];
+        });
+
+        $clases = Clases::whereIn('idPedido', $pedidos_id)
+            ->with('profesor')
+            ->with('pedido')
+            ->get();
+
         return response()->json($clases);
     }
 
-    /**
-     * 
-     * funcion que se encarga de enlistar las clases 
-     *
-     */
-    public function index(): View
-    {
-        $clases = Clases::infoClasesAll();
-		
-		$estados = EstadosClases::all();
-
-        $listClases = array();
-        foreach ($clases as $clase) {
-            $infoAlumno = User::find($clase->idAlumno);
-
-            $nombreAlumno = $infoAlumno->nombre . ' ' . $infoAlumno->apellidos;
-
-            if ($clase->idProfesor != null) {
-                $infoProfesor = User::find($clase->idProfesor);
-
-                $nombreProfesor = $infoProfesor->nombre . ' ' . $infoProfesor->apellidos;
-            } else {
-
-                $nombreProfesor = null;
-            }
-
-            $objetoClase = [
-                "idClase" => $clase->idClase,
-                "idMateria" => $clase->idMateria,
-                "fechaClase" => $clase->fechaClase,
-                "horaClase" => $clase->horaClase,
-                "idEstado" => $clase->idEstado,
-                "estado" => $clase->estado,
-                "etiqueta" => $clase->etiqueta,
-                "nombreMateria" => $clase->nombreMateria,
-                "idProfesor" => $clase->idProfesor,
-                "idAlumno" => $clase->idAlumno,
-                "pago" => $clase->pago,
-                "nombreAlumno" => $nombreAlumno,
-                "nombreProfesor" => $nombreProfesor
-            ];
-
-            array_push($listClases, $objetoClase);
+    public function asignarProfesor(Request $request, $idClase) {
+        $clase = Clases::where('id', $idClase)->with('pedido')->first();
+        
+        if (!$request->idProfesor) {
+            throw ValidationException::requiredParameter('idProfesor');
         }
 
-        return view('admin.clases.listar', [
-            "listClases" => $listClases,
-            "estados" => $estados
-        ]);
-    }
+        $is_assigned_materia = UsuariosMaterias::where('idUsuario', $request->idProfesor)
+            ->where('idMateria', $clase->pedido['idMateria'])
+            ->where('is_authority', true)
+            ->first();
 
-    public function clasesForCondicion($id = 0, $indicador = 4)
-    {
-        if ($id == 0) {
-            $id = Auth::user()->id;
+        if (!$is_assigned_materia) {
+            throw ProfesorException::incorrectAssignment();
         }
 
-        //? se establece la condicion del filtro segun el indicador
-        switch ($indicador) {
-            case '1':
-                $condicion = 'materias.id'; //! 1 es para materias
-                $infomacion = Materias::find($id);
-                $encabezados = array('ID CLASE', 'ALUMNO', 'PROFESOR', 'FECHA <br> HORA', 'ESTADO <br> CLASE');
-                break;
-            case '2':
-                $condicion = 'clases.idProfesor'; //! 2 es para profesor
-                $infomacion = User::find($id);
-                $encabezados = array('ID CLASE', 'MATERIA', 'ALUMNO', 'FECHA <br> HORA', 'ESTADO <br> CLASE');
-                break;
-            case '3':
-                $condicion = 'pedidos.idAlumno'; //! 3 es para alumno
-                $infomacion = User::find($id);
-                $encabezados = array('ID CLASE', 'MATERIA', 'PROFESOR', 'FECHA <br> HORA', 'ESTADO <br> CLASE');
-                break;
-            case '4':
-                $condicion = 'clases.idProfesor'; //? 4 es para la vista de clases en el perfil del profesor
-                $infomacion = User::find($id);
-                $encabezados = array('ID CLASE', 'MATERIA', 'ALUMNO', 'FECHA <br> HORA', 'PAGO <br> CLASE', 'ESTADO <br> CLASE', 'LINKS');
-                break;
-        }
+        $clase->idProfesor = $request->idProfesor;
+        $clase->save();
 
-        $clases = Clases::getClasesCondicion($id, $condicion);
-        //dd($clases);
-        $clasesList = array();
-        foreach ($clases as $clase) {
-            //? validar si existe profesor
-            $idProfesor = $clase->idProfesor;
-            if ($idProfesor === null || $idProfesor === NULL) {
-                $objeto['idProfesor'] = $clase->idProfesor;
-                $objeto['nombreProfesor'] = '';
-            } else {
-                $infoProfesor = User::find($idProfesor);
-                $objeto['idProfesor'] = $clase->idProfesor;
-                $objeto['nombreProfesor'] = $infoProfesor->nombre . $infoProfesor->apellidos;
-            }
-            $idAlumno = $clase->idAlumno;
-            $infoAlumno = User::find($idAlumno);
-
-            $objeto['idClase'] = $clase->idClase;
-            $objeto['idAlumno'] = $clase->idAlumno;
-            $objeto['nombreAlumno'] = $infoAlumno->nombre . ' ' . $infoAlumno->apellidos;
-            $objeto['fecha'] = $clase->fecha;
-            $objeto['hora'] = $clase->hora;
-            $objeto['pago'] = $clase->pagoProfesor;
-            $objeto['link'] = $clase->ligaMeets;
-            $objeto['idEstadoClase'] = $clase->isEstadoClase;
-            $objeto['nombreEstado'] = $clase->nombreEstado;
-            $objeto['etiquetaEstados'] = $clase->etiquetaEstados;
-            $objeto['idMateria'] = $clase->idMateria;
-            $objeto['nombreMateria'] = $clase->nombreMateria;
-
-            array_push($clasesList, $objeto);
-        }
-
-        $estados = EstadosClases::all();
-
-        return view('admin.clases.condicion', [
-            "indicador" => $indicador,
-            "clasesList" => $clasesList,
-            "informacion" => $infomacion,
-            "encabezados" => $encabezados,
-            "estados" => $estados
-        ]);
-    }
-
-    //? metodos del profesor
-
-    /**
-     * 
-     * funcion que se encarga de enlistar las clases para el profesor
-     *
-     */
-    public function clasesProfesor(): View
-    {
-        $estados = EstadosClases::all();
-        return view('profesores.clases.listar', [
-            "estados" => $estados
-        ]);
+        return response()->json($clase, 201);
     }
 
     //? metodos del alumno

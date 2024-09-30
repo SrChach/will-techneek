@@ -85,6 +85,7 @@ Route::group(['middleware' => 'cors'], function () {
         Route::prefix('clases')->group(function () {
             Route::get('', [ClasesApiController::class, 'list']);
 
+            Route::patch('{id}/profesor', [ClasesApiController::class, 'asignarProfesor']);
             Route::get('all', [ClasesController::class, 'clasesIndex']);
         });
 
