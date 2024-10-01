@@ -26,6 +26,7 @@ use App\Models\Roles;
 use App\Models\UsuariosMaterias;
 use App\Notifications\ClaseAgendada;
 use App\Notifications\ClaseAgendadaProfesor;
+use Carbon\Carbon;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redis;
@@ -63,7 +64,17 @@ class ClasesApiController extends Controller
             return $time['id'];
         });
 
-        $clases = Clases::whereIn('idPedido', $pedidos_id)
+        $clasesQuery = Clases::whereIn('idPedido', $pedidos_id);
+        if (isset($request->por_asignar)) {
+            if ($request->por_asignar == true) {
+                // TODO add validation for EstadosPagos
+                $clasesQuery = $clasesQuery->whereNull('idProfesor');
+            } else {
+                $clasesQuery = $clasesQuery->whereNotNull('idProfesor');
+            } 
+        }        
+
+        $clases = $clasesQuery
             ->with('profesor')
             ->with('pedido')
             ->get();
@@ -71,9 +82,24 @@ class ClasesApiController extends Controller
         return response()->json($clases);
     }
 
+    // TODO change timezone
+    public function getCarbonDate($fullDate) {
+        $timezone = 'America/Mexico_City';
+        date_default_timezone_set($timezone);
+        $date = Carbon::createFromFormat('Y-m-d H:i:s', $fullDate, $timezone);
+        $date->setTimezone($timezone);
+        return $date;
+    }
+
     public function asignarProfesor(Request $request, $idClase) {
         $clase = Clases::where('id', $idClase)->with('pedido')->first();
         
+        if (!$request->fecha) {
+            throw ValidationException::requiredParameter('fecha');
+        }
+
+        $carbonDate = $this->getCarbonDate($request->fecha);
+
         if (!$request->idProfesor) {
             throw ValidationException::requiredParameter('idProfesor');
         }
@@ -88,9 +114,23 @@ class ClasesApiController extends Controller
         }
 
         $clase->idProfesor = $request->idProfesor;
+        $clase->fecha = $carbonDate->format('Y-m-d');
+        $clase->hora = $carbonDate->format('h');
         $clase->save();
 
         return response()->json($clase, 201);
+    }
+
+    public function getFromAlumno($idAlumno) {
+        $pedidos = Pedidos::select('id')
+            ->where('idAlumno', $idAlumno)
+            ->get();
+
+        $pedidos_id = $pedidos->map(function ($time) {
+            return $time['id'];
+        });
+        
+        return $pedidos;
     }
 
     //? metodos del alumno
