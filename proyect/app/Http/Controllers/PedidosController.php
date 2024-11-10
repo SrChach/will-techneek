@@ -23,7 +23,7 @@ class PedidosController extends Controller
 {
 
     /**
-     * 
+     *
      * funcion que se encarga de enlistar los pedidos del alumno
      *
      */
@@ -38,21 +38,26 @@ class PedidosController extends Controller
     }
 
     /**
-     * 
+     *
      * funcion de crear el pedido
      *
      */
     public function store(Request $request)
     {
-		
-		$request->validate([
-                'materia'=>'required',
-                'listTemario'=>'required'
-           ],[
-                'materia.required'=>'Selecciona una materia',
-                'listTemario.required'=>'El tema es obligatorio'
-            ]);
-			
+
+        $request->validate(
+            [
+                'materia' => 'required',
+                'listTemario' => 'required',
+                'total' => 'required'
+            ],
+            [
+                'materia.required' => 'Selecciona una materia',
+                'listTemario.required' => 'El tema es obligatorio',
+                'total.required' => 'No pudimos calcular el total'
+            ]
+        );
+
         $folio = 'Pedido_' . time();
         $idMateria = $request->materia[0];
         $idTema = $request->listTemario;
@@ -80,13 +85,13 @@ class PedidosController extends Controller
         $idPedido = $infoPedido->id;
 
         $mensaje = "Has creado un nuevo pedido";
-        $mensajeAdmin = "El pedido " . $folio . " ha sido registrado con " . $horas . " horas."; 
+        $mensajeAdmin = "El pedido " . $folio . " ha sido registrado con " . $horas . " horas.";
 
         $usuarioAdmin = User::where('idRol', 1)->first();
 
         Mail::to(Auth::user()->email)->send(new CrearPedidoAlumnoMailer($idPedido, $idAlumno));
-        app(OneSignalAlertController::class)->getDevicesForUser($mensaje, $idAlumno); 
-        app(OneSignalAlertController::class)->getDevicesForUser($mensajeAdmin, $usuarioAdmin->id); 
+        app(OneSignalAlertController::class)->getDevicesForUser($mensaje, $idAlumno);
+        app(OneSignalAlertController::class)->getDevicesForUser($mensajeAdmin, $usuarioAdmin->id);
 
         $formatoFecha = app(FechaController::class)->formatearFecha($fechaRegistro, $horaRegistro);
         $infoMes = app(FechaController::class)->mesNombre($formatoFecha['numeroMes']);
@@ -95,7 +100,7 @@ class PedidosController extends Controller
             "materia" => $materia,
             "folio" => $folio,
             "pedido" => $pedido,
-            "subtotal" => $subtotal, 
+            "subtotal" => $subtotal,
             "formatoFecha" => $formatoFecha,
             "infoMes" => $infoMes,
         ]);
@@ -121,7 +126,7 @@ class PedidosController extends Controller
             "materia" => $materia,
             "folio" => $folio,
             "pedido" => $infoPedido,
-            "subtotal" => $subtotal, 
+            "subtotal" => $subtotal,
             "formatoFecha" => $formatoFecha,
             "infoMes" => $infoMes,
         ]);
@@ -129,7 +134,7 @@ class PedidosController extends Controller
 
 
     /**
-     * 
+     *
      * funcion de crear el pedido
      *
      */
@@ -151,7 +156,7 @@ class PedidosController extends Controller
     }
 
     /**
-     * 
+     *
      * funcion que se encarga de crear pedidos
      * !!!
      */
@@ -161,16 +166,16 @@ class PedidosController extends Controller
 		//$id=4;
 		//$infoProfesores = UsuariosMaterias::getLastUsuariosForMateria($id, Roles::PROFESOR);
 		//"infoProfesores"=>$infoProfesores
-		
+
         return view('alumnos.pedidos.create', [
             "listaMateria" => $listaMateria
-			
+
         ]);
     }
 
 
     /**
-     * 
+     *
      * funcion que se encarga de crear pedidos
      *
      */
@@ -210,7 +215,7 @@ class PedidosController extends Controller
             $pedido->save();
 
             $horas = $pedido->numero_horas;
-            
+
             $idAlumno = Auth::user()->id;
 
             $infoPedido = Pedidos::where('folio', $folio)->first();
@@ -218,7 +223,7 @@ class PedidosController extends Controller
 
             $mensaje = "Muchas gracias, tu pedido ha sido registrado, ahora por favor agenda tus clases.";
             Mail::to(Auth::user()->email)->send(new PagoPedidoAlumnoMailer($idPedido, $idAlumno));
-            app(OneSignalAlertController::class)->getDevicesForUser($mensaje, $idAlumno); 
+            app(OneSignalAlertController::class)->getDevicesForUser($mensaje, $idAlumno);
             app(ClasesController::class)->crearClases($horas, $pedido->id);
 
             SELF::generarNotificacionPagoAprovado($infoPedido);
@@ -226,7 +231,7 @@ class PedidosController extends Controller
             return redirect()->route('pedidos.show', $folio);
 
         }
-        else 
+        else
         {
             $pedido->idEstadoPago = 3;
             $pedido->save();
@@ -234,14 +239,14 @@ class PedidosController extends Controller
             return redirect()->route('pedidos.index');
         }
 
-       
+
 
     }
 
-    
-    public function generarNotificacionPagoAprovado($pedido)  
+
+    public function generarNotificacionPagoAprovado($pedido)
     {
-        
+
         $usuarioAlumno = User::where('id', Auth::id())->first();
         $usuarioAdmin = User::where('idRol', 1)->first();
 
@@ -249,11 +254,11 @@ class PedidosController extends Controller
         Notification::send($usuarioAdmin, new PedidoEstatus($pedido));
 
     }
-	
-	public function profesoresMateria($id)  
+
+	public function profesoresMateria($id)
     {
-        
-        
+
+
 
 		$infoProfesores = UsuariosMaterias::getLastUsuariosForMateria($id, Roles::PROFESOR);
 		/*echo "<pre>";
@@ -261,7 +266,7 @@ class PedidosController extends Controller
 		echo "</pre>";*/
         return view('alumnos.pedidos.profesores', [
             "infoProfesores"=>$infoProfesores
-			
+
         ]);
 
     }

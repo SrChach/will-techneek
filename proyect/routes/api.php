@@ -36,6 +36,7 @@ Route::group(['middleware' => 'cors'], function () {
         Route::get('materias', [MateriasApiController::class, 'index']);
 
         Route::get('materias/with/{userType}', [MateriasApiController::class, 'withUsers']);
+        Route::get('clases/agendar', [AlumnoApiController::class, 'generarClase']);
     });
 
     Route::middleware('auth:sanctum')->group(function () {

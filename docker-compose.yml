@@ -18,6 +18,5 @@ services:
     volumes:
       - ./dump.sql:/docker-entrypoint-initdb.d/dump.sql
     environment: 
-      - MYSQL_ALLOW_EMPTY_PASSWORD=True
-
+      - MYSQL_ROOT_PASSWORD=techneek_admin
 

@@ -9,8 +9,8 @@ RUN apt-get update && apt-get install -y \
     unzip
 
 # # Install Node
-# RUN curl -fsSL https://deb.nodesource.com/setup_21.x | bash - &&\
-#     apt-get install -y nodejs
+RUN curl -fsSL https://deb.nodesource.com/setup_21.x | bash - &&\
+     apt-get install -y nodejs
 
 # Clear cache
 RUN apt-get clean && rm -rf /var/lib/apt/lists/*
@@ -33,9 +33,14 @@ COPY --from=composer /usr/bin/composer /usr/bin/composer
 # Set the working directory
 WORKDIR /var/www/html
 
+COPY ./proyect/.env ./.env
 COPY ./proyect .
 
+# Install dependencies
 RUN composer install
+RUN npm install --legacy-peer-deps
+RUN npm run build
 
 # Set permissions
 RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
+

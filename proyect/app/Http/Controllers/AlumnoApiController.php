@@ -7,6 +7,7 @@ use App\Exceptions\ClasesException;
 use App\Exceptions\MateriasException;
 use App\Exceptions\PedidosException;
 use App\Exceptions\UserException;
+use App\Helpers\CalendarManager;
 use App\Models\Clases;
 use App\Models\EstadosClases;
 use App\Models\EstadosUsuarios;
@@ -33,7 +34,7 @@ class AlumnoApiController extends Controller
     public function index()
     {
         $alumnos = User::where('idRol', Roles::ALUMNO)->get();
-        
+
         return response()->json($alumnos);
     }
 
@@ -75,13 +76,19 @@ class AlumnoApiController extends Controller
         return response()->json($usuario_materia);
     }
 
+    public static function generarClase() {
+        $response = CalendarManager::create_event();
+
+        return response()->json($response);
+    }
+
     public function horarios($idAlumno)
     {
         $alumnos = User::where('idRol', Roles::ALUMNO)
             ->where('id', $idAlumno)
             ->with('horarios')
             ->get();
-        
+
         return response()->json($alumnos);
     }
 
@@ -96,9 +103,9 @@ class AlumnoApiController extends Controller
     }
 
     /**
-     * 
+     *
      * funcion donde se eliminan los horarios
-     * 
+     *
      */
     public function deleteHorario($idAlumno, Request $request)
     {
@@ -165,7 +172,7 @@ class AlumnoApiController extends Controller
         $alumno = User::where('idRol', Roles::ALUMNO)
             ->where('id', $idAlumno)
             ->first();
-        
+
         if (!$alumno) {
             throw UserException::notFound();
         }
@@ -176,9 +183,9 @@ class AlumnoApiController extends Controller
 
 
     /**
-     * 
+     *
      * funcion donde se enlistan la informacion de un alumno seleccionado para el @admin
-     * 
+     *
      */
     public function show($id)
     {
@@ -189,11 +196,11 @@ class AlumnoApiController extends Controller
         $clasesTomadas = Clases::clasesCountForAlumno($id, 4);
         $infoClasImpar = Clases::clasesInfoForUsuario($condicion, $id, 4);
         $totalCosto = Clases::getTotalCosto($condicion, $id);
-		
-		
+
+
 		$avgAlumno = BitacorasAlumno::avgAlumno($id);
-		
-		
+
+
 		/*echo "<pre>";
 		print_r($avgAlumno);
 		echo "</pre>";*/
@@ -282,9 +289,9 @@ class AlumnoApiController extends Controller
 
     //? metodos del profesor
     /**
-     * 
+     *
      * funcion donde se enlistan todos los alumnos para el profesor
-     * 
+     *
      */
     public function alumnosProfesor()
     {
@@ -318,9 +325,9 @@ class AlumnoApiController extends Controller
     }
 
     /**
-     * 
+     *
      * funcion donde se enlistan la informacion de un alumno seleccionado para el profesor
-     * 
+     *
      */
     public function fichaAlumnoForProfesor($id)
     {
